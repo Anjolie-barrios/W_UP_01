@@ -32,7 +32,8 @@ When L is the average number of pushups of line players and S is the average num
 # Methods
 
 <!--Decide on your methods: use "variable analysis" or other appropriate descriptors. Make sure to choose at least one graphical method and at least one numerical method.!--> 
-The type of variable analysis used in this study will be quantitative, since the question asked has more to do with the values (in this case, number of pushups and their relationship with the "position" value) than their meaning or interpretation. Pushups are numeric, but position is categorical; therefore, Numeric ~ Categorical will be used.
+The type of variable analysis used in this study will be quantitative, since the question asked has more to do with the values (in this case, number of pushups and their relationship with the "position" value) than their meaning or interpretation. Pushups are numeric, but position is categorical; therefore, Numeric ~ Categorical will be used. 
+For the sake of thoroughness, Numeric ~ Numeric will also be used to compare weight to pushups.  
   
 # Results
 
@@ -51,23 +52,38 @@ plot(pushups ~ position, data = pushups) %>%
 ```
   
 Note: The blue line is the average pushup count for Skill players. The magenta line is the average pushup count for Line players.  
-
 <!--Graphical results here. Make sure to show your code. Provide appropriate labels for axes, giving units if possible, and provide a good title for the graph, too. Use the graphical results to describe the patterns if any that exist in the data as focused toward the research question!-->
 
 ### Numerical Descriptive Results
 
 <!--Numerical results go here. Use the numerical results to describe the patterns if any that exist in the data as focused toward the research question!-->
-
 ```{r}
 favstats(pushups ~ position, data = pushups) 
 ```
+If skill players' number of pushups are compared to that of line players, then the skill players will, on average, do more pushups.  
 
 ## Inferential Results
 
 <!--State hypothesis clearly. Make sure your discussion of the inferential test covers all the aspects that the test output produces, such as test statistic, p-value etc. Make a decision about the null hypothesis, explain the assumptions on which the selected test/procedure was based, and why the chosen procedure satisfys the assumptions and is appropriate to answer the research question!-->
-If skill players' number of pushups are compared to that of line players, then the skill players will, on average, do more pushups. 
-
+The following parametic tests, while used here for the sake of convenience, don't necessarily reflect on the general population of football players. This is because it cannot be assumed that the sample is large enough to represent all skill & line players.  The sample does, however, have a normal variance around the mean, and the line/skill categories have similar spreads with positive skews. 
+```{r}
+t.test(pushups ~ position, data = pushups) 
+```
+The means between SKILL and LINE players, as discussed before, are different.  
+``` {r}
+t.test(weight ~ position, data = pushups)
+```
+The mean weight of LINE players (273.25 lbs) is much more than that of SKILL players (192 lbs).  
+Very small (smaller than 0.05) p- values, 0.000009 and 0.000017, mean that the alternative hypothesis - that the pushup means are different - is very likely (pretty much confirmed). This is because the p- value is the probability that the data can be explained by the null hypothesis.  
+Pushups vs position has a fitting Degree of Freedom close to 30, meaning an estimate has a lot of freedom to vary without messing up the parameters. Weight doesn't have as much freedom and a slightly higher p- value. So, given position, it would be easier to estimate pushups than weight.  
+``` {r}
+model.1 <- lm(weight~pushups,data=pushups)
+summary.lm(model.1)
+```
+With such a big value for standard error (39.57), it can be confirmed that weight and pushups don't directly affect each other; rather, position affects (or is affected by) both values.  
+  
 # Discussion and Conclusion
-
+Since SKILL is clearly associated with lighter weight and more pushups than LINE is, it seems like weight and pushups are closely correlated. However, position might be the independent variable to the dependent weight and pushups.  
+In real life, weight may have influenced the players' decision of position or their position might have necessitated gaining weight (in muscle) or losing it. Different positions might have different training regimens - or, having to carry your weight with a pushup means that lighter players have an easier time. 
+In any case, the average number of pushups done by line players is statistically different than that of skill players; thus, the alternate hypothesis is proven.  
 <!--Discussion and conclusion here. If you found a relationship be sure to consider whether the relationship occurs because one of the variavbles causes the other, or whether they perhasps are related for some other reason. Watch the chapter 6 videos from the GeorgeTown videos collection.!-->
-
